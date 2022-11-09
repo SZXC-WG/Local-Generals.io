@@ -14,6 +14,19 @@ Play generals.io on your local computer without connecting the internet!
 
 Then, go to [the release page](http://github.com/AppOfficer/LOCAL-GENERALS.IO/releases) to download!
 
+## Releases
+
+### beta(β) versions
+
+### biggennew[1.0.0.1] & createmap[0.1.0.6] : 2022/10/28
+
+**Release Info**  
+biggennew: version {221028} v1.0.0.1  
+\[together with\] createmap: version {221028} v0.1.0.6
+
+- first release on GitHub!
+- first version to have a version number!
+
 ## To-do list
 
 - Add rectangle support, not only square maps.
