@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include "windows.h"
 #include "conio.h"
+#include "LGenPrint.h"
 #define SetColor(x) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),x)
 using namespace std;
 int N=26;
@@ -20,51 +21,7 @@ string ts(int x) {
 	}
 	return s;
 }
-void gotoxy(int x,int y) {
-	COORD pos= {x,y};
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
-}
-void HideCursor() {
-	HANDLE handle=GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_CURSOR_INFO CursorInfo;
-	GetConsoleCursorInfo(handle,&CursorInfo);
-	CursorInfo.bVisible=false;
-	SetConsoleCursorInfo(handle,&CursorInfo);
-}
-void ShowCursor() {
-	HANDLE handle=GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_CURSOR_INFO CursorInfo;
-	GetConsoleCursorInfo(handle,&CursorInfo);
-	CursorInfo.bVisible=true;
-	SetConsoleCursorInfo(handle,&CursorInfo);
-}
-void setcolor(string col) {
-	if(col=="red") cout<<"\033[1;31m";
-	else if(col=="green") cout<<"\033[1;32m";
-	else if(col=="blue") cout<<"\033[34m";
-	else if(col=="yellow") cout<<"\033[1;33m";
-	else if(col=="purple") cout<<"\033[1;35m";
-	else if(col=="cyan") cout<<"\033[1;36m";
-	else if(col=="white") cout<<"\033[1m";
-	else if(col=="grey") cout<<"\033[1;30m";
-	else if(col=="brown") cout<<"\033[33m";
-	else if(col=="lblue") cout<<"\033[1;34m";
-	else cout<<"\033[0m";
-}
-void SETCOLOR(string col) {
-	if(col=="red") cout<<"\033[0m\033[1;31;41m";
-	else if(col=="green") cout<<"\033[0m\033[1;32;41m";
-	else if(col=="blue") cout<<"\033[0m\033[34;41m";
-	else if(col=="yellow") cout<<"\033[0m\033[1;33;41m";
-	else if(col=="purple") cout<<"\033[0m\033[1;35;41m";
-	else if(col=="cyan") cout<<"\033[0m\033[1;36;41m";
-	else if(col=="white") cout<<"\033[0m\033[1;41m";
-	else if(col=="grey") cout<<"\033[0m\033[1;30;41m";
-	else if(col=="brown") cout<<"\033[0m\033[33;41m";
-	else if(col=="lblue") cout<<"\033[0m\033[1;34;41m";
-	else cout<<"\033[0m\033[;;41m";
-}
-void resetcolor() {cout<<"\033[0m";}
+
 struct block {int type,x;};
 int cnt,cnt2,dx[4] {-1,0,1,0},dy[4] {0,-1,0,1},nowx,nowy,
     d2x[8] {-1,-1,-1,0,0,1,1,1},d2y[8] {-1,0,1,-1,1,-1,0,1},
@@ -431,15 +388,156 @@ void getmap(string name) {
 }
 deque<int> movement;
 
+/*************** map information ***************/
+
 void getN() { cout<<"请输入地图大小："; cin>>N; }
 int __citypower;
 void getCity() { cout<<"请输入城池初始力量："; cin>>__citypower; }
 const int dlk_sz[55]= {0,25,40,40,40,49,35,45,50/*40*50*/,50,50,50,50/*50*40*/,50,50,50,-1,50,-1};
 const int dlk_wtcz_sz[55]= {0,25,-1,-1,-1,-1,-1,-1,50,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+const string mapName[205] = {
+	"随机地图"s,
+	"完全塔"s,
+	"完全沼泽"s,
+	"大平原"s,
+	"地理课"s,
+	"地理课 无塔重制版"s,
+	"地理课2"s,
+	"地理课3：川流不息"s,
+	"地理课4：山巅之湖"s,
+	"地理课5：沼泽迷宫"s,
+	"地理课6：中央宝藏"s,
+	"地理课7：经典重现"s,
+	"地理课8：川流不息2"s,
+	"地理课9：欧洲地图"s,
+	"地理课9 无塔重制版"s,
+	"地理课10：非洲地图"s,
+	"地理课11：东亚地图"s,
+	"地理课12：迷宫之战"s,
+	"地理课13：海盗奇兵"s,
+	"地理课14：群岛争霸"s,
+	"地理课15：幽暗溪流"s,
+	"地理课16：深海礁群"s,
+	"地理课17：四方争锋"s,
+};
 
+/*************** screen pages ***************/
+
+enum PAGE {pEXIT,pMain,pCMap};
+
+void MainPage(PAGE);
+void ChooseMap(PAGE);
+
+void MainPage(PAGE pFrom=pEXIT) {
+__MAINPAGE:
+	system("cls");
+	printText(sCenter,"Welcome to the"); toNxtLine();
+	printText(sCenter,R"(|                        |   ____             )"); toNxtLine();
+	printText(sCenter,R"(|     _____ _____ _____  |   |     _____ _____)"); toNxtLine();
+	printText(sCenter,R"(|     |   | |     |   |  |   | ___ |   | |   |)"); toNxtLine();
+	printText(sCenter,R"(|     |   | |     |   |  |   |   | |___| |   |)"); toNxtLine();
+	printText(sCenter,R"(|____ |___| |____ |__/|_ |_/ |___| |____ |   |)"); toNxtLine();
+	toNxtLine();
+	printText(sCenter,"Choose one of the option below to begin:"); toNxtLine();
+	printText(sCenter,"(Arrow keys to choose; Enter to confirm)"); toNxtLine();
+	toNxtLine();
+	printText(sCenter,"  0 Previous Page"); toNxtLine();
+	printText(sCenter,"  1 Choose Map   "); toNxtLine();
+	printText(sCenter,"  2 Exit         ");
+	char ch; int opt=1;
+	for(int i=0; i<2; ++i) printText(sCenter," ",-9),toPreLine();
+	printText(sCenter," ",-9);
+	for(int i=0; i<opt; ++i) toNxtLine();
+	printText(sCenter,">",-9);
+	for(int i=0; i<2-opt; ++i) toNxtLine();
+	while(1) {
+		ch=getch();
+		if(ch==13) {
+			switch(opt) {
+				case 0: return;
+				case 1: {
+					ChooseMap(pMain);
+					goto __MAINPAGE;
+					break;
+				}
+				case 2: exit(0);
+			}
+		} else if(ch==-32) {
+			ch=getch();
+			switch(ch) {
+				case 72: {
+					if(opt>0) --opt;
+					else cout<<'\a'<<flush;
+					break;
+				}
+				case 80: {
+					if(opt<2) ++opt;
+					else cout<<'\a'<<flush;
+					break;
+				}
+			}
+		}
+		for(int i=0; i<2; ++i) printText(sCenter," ",-9),toPreLine();
+		printText(sCenter," ",-9);
+		for(int i=0; i<opt; ++i) toNxtLine();
+		printText(sCenter,">",-9);
+		for(int i=0; i<2-opt; ++i) toNxtLine();
+	}
+}
+
+void ChooseMap(PAGE pFrom=pMain) {
+	system("cls");
+	printText(sLeft," Map Lists: "); toNxtLine(); toNxtLine();
+	int wx,wy; getwinxy(wx,wy);
+	int lpp=wx-2-2-2;
+	printText(sLeft,"  00: Previous Page");
+	toSpeLine(wx-3);
+	printText(sLeft,"  "s+to_string(lpp+1)+": Next Page    "s);
+	toSpeLine(3);
+	for(int i=1; i<=lpp; ++i) printText(sLeft,"  "s+(i<10?"0"s:""s)+to_string(i)+": "+mapName[i]),toNxtLine();
+	char ch; int opt=1;
+	for(int i=0; i<=lpp; ++i) printText(sLeft," "),toPreLine();
+	printText(sLeft," ");
+	for(int i=0; i<opt; ++i) toNxtLine();
+	printText(sLeft,">");
+	for(int i=0; i<=lpp-opt; ++i) toNxtLine();
+	while(1) {
+		ch=getch();
+		if(ch==13) {
+		} else if(ch==-32) {
+			ch=getch();
+			switch(ch) {
+				case 72: {
+					if(opt>0) --opt;
+					else cout<<'\a'<<flush;
+					break;
+				}
+				case 80: {
+					if(opt<=lpp) ++opt;
+					else cout<<'\a'<<flush;
+					break;
+				}
+			}
+		}
+		for(int i=0; i<=lpp; ++i) printText(sLeft," "),toPreLine();
+		printText(sLeft," ");
+		for(int i=0; i<opt; ++i) toNxtLine();
+		printText(sLeft,">");
+		for(int i=0; i<=lpp-opt; ++i) toNxtLine();
+	}
+}
+
+/*************** main() function ***************/
+
+HWND hwnd = GetConsoleWindow();
 signed main() {
 	ios::sync_with_stdio(false);
+	ShowWindow(hwnd,SW_MAXIMIZE);
+	printText(sCenter,"Hello World! Hello World! Hello World! Hello World! Hello World!");
+	toNxtLine();
 	HideCursor();
+	MainPage();
+	system("pause");
 	char ch;
 	cout<<"generals.io\npress SPACE to start\n"<<flush;
 	while(getch()!=' ');
