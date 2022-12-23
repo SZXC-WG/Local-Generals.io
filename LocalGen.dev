@@ -29,29 +29,39 @@ IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=1
 CompilerSettings=0000000000000000001000000
-UnitCount=1
+UnitCount=2
 
 [VersionInfo]
-Major=1
+Major=2
 Minor=0
 Release=0
-Build=1
+Build=89
 LanguageID=1033
 CharsetID=1252
 CompanyName=
-FileVersion=1.0.0.1
-FileDescription=Developed using the Dev-C++ IDE
+FileVersion=2.0.0.89
+FileDescription=Localized Generals.io
 InternalName=
-LegalCopyright=
+LegalCopyright=AppOfficer (c) All rights reserved.
 LegalTrademarks=
 OriginalFilename=
-ProductName=
-ProductVersion=1.0.0.1
+ProductName=Localized Generals.io
+ProductVersion=2.0.0.89
 AutoIncBuildNr=1
 SyncProduct=1
 
 [Unit1]
 FileName=LGenMAIN.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit2]
+FileName=LGenPrint.h
 CompileCpp=1
 Folder=
 Compile=1

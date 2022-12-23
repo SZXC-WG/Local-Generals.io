@@ -394,31 +394,40 @@ void getN() { cout<<"请输入地图大小："; cin>>N; }
 int __citypower;
 void getCity() { cout<<"请输入城池初始力量："; cin>>__citypower; }
 const int dlk_sz[55]= {0,25,40,40,40,49,35,45,50/*40*50*/,50,50,50,50/*50*40*/,50,50,50,-1,50,-1};
-const int dlk_wtcz_sz[55]= {0,25,-1,-1,-1,-1,-1,-1,50,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-const string mapName[205] = {
-	"随机地图"s,
-	"完全塔"s,
-	"完全沼泽"s,
-	"大平原"s,
-	"地理课"s,
-	"地理课 无塔重制版"s,
-	"地理课2"s,
-	"地理课3：川流不息"s,
-	"地理课4：山巅之湖"s,
-	"地理课5：沼泽迷宫"s,
-	"地理课6：中央宝藏"s,
-	"地理课7：经典重现"s,
-	"地理课8：川流不息2"s,
-	"地理课9：欧洲地图"s,
-	"地理课9 无塔重制版"s,
-	"地理课10：非洲地图"s,
-	"地理课11：东亚地图"s,
-	"地理课12：迷宫之战"s,
-	"地理课13：海盗奇兵"s,
-	"地理课14：群岛争霸"s,
-	"地理课15：幽暗溪流"s,
-	"地理课16：深海礁群"s,
-	"地理课17：四方争锋"s,
+const int dlk_wtcz_sz[55]= {0,25,-1,-1,-1,-1,-1,-1,40,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+
+struct MapInfoS {
+	int id;	string chiname; string engname; string auth; int hei; int wid; int generalcnt; int swampcnt; int citycnt; int mountaincnt; int plaincnt;
+};
+const int mapTOT=25;
+MapInfoS maps[205] = {
+	/* id , chiname , engname , auth , hei , wid , generalcnt , swampcnt , citycnt , mountaincnt , plaincnt */
+	{0,"空","void","void",-2,-2,-2,-2,-2,-2,-2},
+	{1,"随机地图","Random","LocalGen",-1,-1,10,-1,-1,-1,-1},
+	{2,"完全塔","Full Tower/City","LocalGen",-1,-1,10,0,-1,0,0},
+	{3,"完全沼泽","Full Swamp","LocalGen",-1,-1,10,-1,0,0,0},
+	{4,"大平原","Plain","LocalGen",-1,-1,10,0,0,0,-1},
+	{5,"地理课","Geography Class","nfls_old_salty_fish",25,25,10,102,58,170,285},
+	{6,"地理课 无塔重制版","Geography Class (No General Remake)","nfls_old_salty_fish",25,25,0,136,52,172,265},
+	{7,"地理课2","Geography Class 2","nfls_old_salty_fish",40,40,15,382,184,354,665},
+	{8,"地理课3：川流不息","Geography Class 3: Endless Rivers","nfls_old_salty_fish",40,40,14,642,93,309,542},
+	{9,"地理课4：山巅之湖","Geography Class 4: Lake Upon the Mountain","nfls_old_salty_fish",40,40,14,674,136,567,209},
+	{10,"地理课5：沼泽迷宫","Geography Class 5: Swamp Labyrinth","AppOfficer",49,49,12,1085,218,1066,20},
+	{11,"地理课6：中央宝藏","Geography Class 6: Middle Treasure","AppOfficer",35,35,8,396,119,504,198},
+	{12,"地理课7：经典重现","Geography Class 7: Classic Recurred","nfls_old_salty_fish",45,45,25,491,165,603,741},
+	{13,"地理课8：川流不息2","Geography Class 8: Endless Rivers 2","AppOfficer",40,50,15,685,177,445,678},
+	{14,"地理课9：欧洲地图","Geography Class 9: Europe","nfls_old_salty_fish",50,50,19,845,136,348,1152},
+	{15,"地理课9 无塔重制版","Geography Class 9: Europe (No General Remake)","nfls_old_salty_fish",40,40,0,650,92,239,619},
+	{16,"地理课10：非洲地图","Geography Class 10: Africa","nfls_old_salty_fish",50,50,29,1338,164,331,638},
+	{17,"地理课11：东亚地图","Geography Class 11: East Asia","AppOfficer",50,50,24,678,215,592,991},
+	{18,"地理课12：迷宫之战","Geography Class 12: Labyrinth Battle","nfls_old_salty_fish",50,40,0,0,182,646,1172},
+	{19,"地理课13：海盗奇兵","Geography Class 13: Pirates","nfls_old_salty_fish",50,50,0,1259,208,0,1033},
+	{20,"地理课14：群岛争霸","Geography Class 14: Islands","ktq_cpp",50,50,0,1620,197,265,418},
+	{21,"地理课15：幽暗溪流","Geography Class 15: Gloomy Streams","nfls_old_salty_fish",50,50,0,1038,189,998,285},
+	{22,"地理课16：深海礁群","Geography Class 16: Deep Sea Reefs","chrhaa",50,50,0,2194,88,208,10},
+	{23,"地理课17：四方争锋","Geography Class 17: Directions Striving","chrhaa",43,43,4,428,121,260,1036},
+	{24,"地理课18：李联形势","Geography Class 18: LSZC Republic","AppOfficer & nfls_old_salty_fish",50,50,0,999,224,462,815},
+	{25,"地理课19：澳大利亚","Geography Class 19: Australia","chrhaa",50,50,0,1348,188,488,476},
 };
 
 /*************** screen pages ***************/
@@ -427,39 +436,40 @@ enum PAGE {pEXIT,pMain,pCMap};
 
 void MainPage(PAGE);
 void ChooseMap(PAGE);
+void MapInfo(int,PAGE);
 
 void MainPage(PAGE pFrom=pEXIT) {
 __MAINPAGE:
 	system("cls");
-	printText(sCenter,"Welcome to the"); toNxtLine();
+	printText(sCenter,"Welcome to the 欢迎来到"); toNxtLine();
 	printText(sCenter,R"(|                        |   ____             )"); toNxtLine();
 	printText(sCenter,R"(|     _____ _____ _____  |   |     _____ _____)"); toNxtLine();
 	printText(sCenter,R"(|     |   | |     |   |  |   | ___ |   | |   |)"); toNxtLine();
 	printText(sCenter,R"(|     |   | |     |   |  |   |   | |___| |   |)"); toNxtLine();
 	printText(sCenter,R"(|____ |___| |____ |__/|_ |_/ |___| |____ |   |)"); toNxtLine();
 	toNxtLine();
-	printText(sCenter,"Choose one of the option below to begin:"); toNxtLine();
-	printText(sCenter,"(Arrow keys to choose; Enter to confirm)"); toNxtLine();
+	printText(sCenter,"Choose one of the options below to begin:"); toNxtLine();
+	printText(sCenter,"(Arrow keys to choose; [ENTER] to confirm)"); toNxtLine();
+	printText(sCenter,"选择下面的选项之一以开始："); toNxtLine();
+	printText(sCenter,"（方向键选择，回车键 [ENTER] 确认）"); toNxtLine();
 	toNxtLine();
 	printText(sCenter,"  0 Previous Page"); toNxtLine();
 	printText(sCenter,"  1 Choose Map   "); toNxtLine();
 	printText(sCenter,"  2 Exit         ");
-	char ch; int opt=1;
-	for(int i=0; i<2; ++i) printText(sCenter," ",-9),toPreLine();
+	char ch; int opt=1,optioncnt=2;
+	for(int i=0; i<optioncnt; ++i) printText(sCenter," ",-9),toPreLine();
 	printText(sCenter," ",-9);
 	for(int i=0; i<opt; ++i) toNxtLine();
 	printText(sCenter,">",-9);
-	for(int i=0; i<2-opt; ++i) toNxtLine();
+	for(int i=0; i<optioncnt-opt; ++i) toNxtLine();
 	while(1) {
 		ch=getch();
 		if(ch==13) {
 			switch(opt) {
-				case 0: return;
-				case 1: {
-					ChooseMap(pMain);
-					goto __MAINPAGE;
-					break;
+				case 0: {
+					return;
 				}
+				case 1: ChooseMap(pMain); goto __MAINPAGE;
 				case 2: exit(0);
 			}
 		} else if(ch==-32) {
@@ -471,54 +481,67 @@ __MAINPAGE:
 					break;
 				}
 				case 80: {
-					if(opt<2) ++opt;
+					if(opt<optioncnt) ++opt;
 					else cout<<'\a'<<flush;
 					break;
 				}
 			}
 		}
-		for(int i=0; i<2; ++i) printText(sCenter," ",-9),toPreLine();
+		for(int i=0; i<optioncnt; ++i) printText(sCenter," ",-9),toPreLine();
 		printText(sCenter," ",-9);
 		for(int i=0; i<opt; ++i) toNxtLine();
 		printText(sCenter,">",-9);
-		for(int i=0; i<2-opt; ++i) toNxtLine();
+		for(int i=0; i<optioncnt-opt; ++i) toNxtLine();
 	}
 }
 
 void ChooseMap(PAGE pFrom=pMain) {
 	system("cls");
-	printText(sLeft," Map Lists: "); toNxtLine(); toNxtLine();
+	int lpc=0; int opt=1;
+__CHOOSEMAP:
 	int wx,wy; getwinxy(wx,wy);
-	int lpp=wx-2-2-2;
+	int lpp=wx-3-1-2;
+	toSpeLine(0);
+	printText(sLeft,"  地图列表 Map Lists: (page "s+to_string(lpc+1)+"/"s+to_string((mapTOT+lpp-1)/lpp)+")     "s); toNxtLine(); 
+	printText(sLeft,"  (Press [ESC] to go back to MAIN PAGE)"); toNxtLine(); toNxtLine();
 	printText(sLeft,"  00: Previous Page");
-	toSpeLine(wx-3);
-	printText(sLeft,"  "s+to_string(lpp+1)+": Next Page    "s);
-	toSpeLine(3);
-	for(int i=1; i<=lpp; ++i) printText(sLeft,"  "s+(i<10?"0"s:""s)+to_string(i)+": "+mapName[i]),toNxtLine();
-	char ch; int opt=1;
+	toSpeLine(wx-2);
+	printText(sLeft,"  "s+to_string(lpp+1)+": Next Page    "s); 
+	toSpeLine(4);
+	for(int i=1; i<=lpp; ++i) cout<<setw(35)<<left,printText(sLeft,"  "s+(i<10?"0"s:""s)+to_string(i)+": "+maps[i+lpc*lpp].chiname),toNxtLine();
+	char ch;
 	for(int i=0; i<=lpp; ++i) printText(sLeft," "),toPreLine();
 	printText(sLeft," ");
 	for(int i=0; i<opt; ++i) toNxtLine();
 	printText(sLeft,">");
 	for(int i=0; i<=lpp-opt; ++i) toNxtLine();
 	while(1) {
+		if(opt!=0 && opt!=lpp+1) MapInfo(lpp*lpc+opt,pCMap);
 		ch=getch();
-		if(ch==13) {
-		} else if(ch==-32) {
+		if(ch==13/*[ENTER]*/) {
+			if(opt==0) /* 00: Previous Page */ {
+				if(lpc>0) { --lpc; goto __CHOOSEMAP; }
+			} else if(opt==lpp+1) /* lpp+1: Next Page */ {
+				if((lpc+1)*lpp<mapTOT) { ++lpc; goto __CHOOSEMAP; }
+			}
+		} else if(ch==27/*[ESC]*/) {
+			return;
+		} else if(ch==-32/*[Arrow Keys]*/) {
 			ch=getch();
 			switch(ch) {
-				case 72: {
+				case 72: /*[UP]*/ {
 					if(opt>0) --opt;
 					else cout<<'\a'<<flush;
 					break;
 				}
-				case 80: {
+				case 80: /*[DOWN]*/ {
 					if(opt<=lpp) ++opt;
 					else cout<<'\a'<<flush;
 					break;
 				}
 			}
 		}
+		toSpeLine(wx-2);
 		for(int i=0; i<=lpp; ++i) printText(sLeft," "),toPreLine();
 		printText(sLeft," ");
 		for(int i=0; i<opt; ++i) toNxtLine();
@@ -527,17 +550,52 @@ void ChooseMap(PAGE pFrom=pMain) {
 	}
 }
 
+void MapInfo(int mapid,PAGE pFrom=pCMap) {
+	/* the map information will be print aligned to right. */
+	toSpeLine(2);
+	printText(sRight,string(20,' ')+maps[mapid].chiname); toNxtLine();
+	printText(sRight,string(40,' ')+maps[mapid].engname); toNxtLine();
+	toNxtLine();
+	printText(sRight,"Author 作者"s); toNxtLine();
+	printText(sRight,string(40,' ')+maps[mapid].auth); toNxtLine();
+	toNxtLine();
+	printText(sRight,string(2,' ')+"Height 行数: "s+to_string(maps[mapid].hei)); toNxtLine();
+	printText(sRight,string(2,' ')+"Width 列数: "s+to_string(maps[mapid].wid)); toNxtLine();
+	toNxtLine();
+	printText(sRight,"General Count 王塔（将军）数"s); toNxtLine();
+	printText(sRight,string(4,' ')+to_string(maps[mapid].generalcnt)); toNxtLine();
+	printText(sRight,"Swamp Count 沼泽数"s); toNxtLine();
+	printText(sRight,string(4,' ')+to_string(maps[mapid].swampcnt)); toNxtLine();
+	printText(sRight,"City/Tower Count 城市数"s); toNxtLine();
+	printText(sRight,string(4,' ')+to_string(maps[mapid].citycnt)); toNxtLine();
+	printText(sRight,"Mountain Count 山地数"s); toNxtLine();
+	printText(sRight,string(4,' ')+to_string(maps[mapid].mountaincnt)); toNxtLine();
+	printText(sRight,"Plain Count 平原数"s); toNxtLine();
+	printText(sRight,string(4,' ')+to_string(maps[mapid].plaincnt)); toNxtLine();
+}
+
 /*************** main() function ***************/
 
 HWND hwnd = GetConsoleWindow();
 signed main() {
 	ios::sync_with_stdio(false);
 	ShowWindow(hwnd,SW_MAXIMIZE);
-	printText(sCenter,"Hello World! Hello World! Hello World! Hello World! Hello World!");
-	toNxtLine();
 	HideCursor();
+	printText(sCenter,"This is a text before loading is completed."); toNxtLine(); 
+	printText(sCenter,"这是一个在加载前的文本。"); toNxtLine();
+	printText(sCenter,"Please set your font size at this time,"); toNxtLine(); 
+	printText(sCenter,"so you can get a better game feedback."); toNxtLine();
+	printText(sCenter,"请适当调整您的终端字体大小，"); toNxtLine();
+	printText(sCenter,"以获得更好的运行体验。"); toNxtLine();
+	toNxtLine();
+	printText(sCenter,"Press any key to continue. . ."); toNxtLine(); 
+	printText(sCenter,"请按任意键继续. . ."); toNxtLine();
+	getch();
+	toNxtLine();
 	MainPage();
 	system("pause");
+	cout<<"如果你看到了这段文字，说明您已退出新版。"<<endl;
+	cout<<"（但是，在这里，你可以体验旧版。）"<<endl;
 	char ch;
 	cout<<"generals.io\npress SPACE to start\n"<<flush;
 	while(getch()!=' ');
@@ -564,9 +622,9 @@ signed main() {
 	cout<<"k. 地理课11：东亚地图 (dlk11.txt/dlk11_wt.txt)"<<endl;
 	cout<<"l. 地理课12：迷宫之战 (dlk12.txt)（暂不可用）"<<endl;
 	cout<<"m. 地理课13：海盗奇兵 (dlk13.txt)"<<endl;
-	cout<<"n. 地理课14：群岛争霸 (dlk14.txt)"<<endl;
+	cout<<"n. 地理课14：深海礁群 (dlk14.txt)"<<endl;
 	cout<<"o. 地理课15：幽暗溪流 (dlk15.txt)"<<endl;
-	cout<<"p. 地理课16：深海礁群 (dlk16.txt)"<<endl;
+	cout<<"p. 地理课16：群岛争霸 (dlk16.txt)"<<endl;
 	cout<<"q. 地理课17：四方争锋 (dlk17.txt/dlk17_wt.txt)（暂不可用）"<<endl;
 	cout<<endl;
 	string mapfile;

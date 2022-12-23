@@ -78,19 +78,19 @@ void prTxtFrom(int stx,int sty,string pText) {
 	return ;
 }
 
+inline void toNxtLine() {int x,y; getxy(x,y); gotoxy(x+1,y);}
+inline void toPreLine() {int x,y; getxy(x,y); gotoxy(x-1,y);}
+inline void toSpeLine(int nx) {int x,y; getxy(x,y); gotoxy(nx,y);}
 inline void printText(screenPlace sPlace,string pText,int pos=0) {
 	int x,y; getxy(x,y);
 	int wx,wy; getwinxy(wx,wy);
 	switch(sPlace) {
 		case sLeft: assert(pos>=0); prTxtFrom(x,pos,pText); break;
-		case sRight: assert(pos>=0); prTxtFrom(x,wy-pText.length()-pos,pText); break;
+		case sRight: assert(pos>=0); prTxtFrom(x,wy-pText.length()-pos,pText); gotoxy(x,y); break;
 		case sCenter: {
 			prTxtFrom(x,(wy>>1)-(pText.length()>>1)+pos,pText);
 			break;
 		}
 	}
 }
-inline void toNxtLine() {int x,y; getxy(x,y); gotoxy(x+1,y);}
-inline void toPreLine() {int x,y; getxy(x,y); gotoxy(x-1,y);}
-inline void toSpeLine(int nx) {int x,y; getxy(x,y); gotoxy(nx,y);}
 

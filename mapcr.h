@@ -423,6 +423,11 @@ void gene_dlk9_wtcz() {
 	int n=40;
 	freopen("dlk9_wtcz.txt","w",stdout);
 	cout << n << endl;
+	for(int i=0; i<m; ++i) {
+		do x[i]=mtrand()%n,y[i]=mtrand()%n;
+		while(dlk9_wtcz_mp[x[i]][y[i]]!=-1);
+		dlk9_wtcz_mp[x[i]][y[i]]=0;
+	}
 	for(int i=0; i<n; ++i) {
 		for(int j=0; j<n; ++j) cout << dlk9_wtcz_mp[i][j] << ' ';
 		cout << endl;
