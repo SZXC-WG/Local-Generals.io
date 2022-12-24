@@ -641,4 +641,52 @@ void gene_dlk16() {
 	fprintf(stderr,"dlk16.txt done. ");
 }
 void gene_dlk17() {}
+void gene_dlk18() {
+	int n=50;
+	freopen("dlk18.txt","w",stdout);
+	cout << n << endl;
+	for(int i=0; i<m; ++i) {
+		do x[i]=mtrand()%n,y[i]=mtrand()%n;
+		while(dlk18_mp[x[i]][y[i]]!=-1);
+		dlk18_mp[x[i]][y[i]]=0;
+	}
+	for(int i=0; i<n; ++i) {
+		for(int j=0; j<n; ++j) cout << dlk18_mp[i][j] << ' ';
+		cout << endl;
+	}
+	for(int i=0; i<n; ++i) {
+		for(int j=0; j<n; ++j) cout << dlk18_army[i][j] << ' ';
+		cout << endl;
+	}
+	for(int i=0; i<n; ++i) {
+		for(int j=0; j<n; ++j) cout << dlk18_light[i][j] << ' ';
+		cout << endl;
+	}
+	fclose(stdout);
+	fprintf(stderr,"dlk18.txt done.\n");
+}
+void gene_dlk19() {
+	int n=50;
+	freopen("dlk19.txt","w",stdout);
+	cout << n << endl;
+	for(int i=0; i<m; ++i) {
+		do x[i]=mtrand()%n,y[i]=mtrand()%n;
+		while(dlk19_mp[x[i]][y[i]]!=-1);
+		dlk19_mp[x[i]][y[i]]=0;
+	}
+	for(int i=0; i<n; ++i) {
+		for(int j=0; j<n; ++j) cout << dlk19_mp[i][j] << ' ';
+		cout << endl;
+	}
+	for(int i=0; i<n; ++i) {
+		for(int j=0; j<n; ++j) cout << dlk19_army[i][j] << ' ';
+		cout << endl;
+	}
+	for(int i=0; i<n; ++i) {
+		for(int j=0; j<n; ++j) cout << dlk19_light[i][j] << ' ';
+		cout << endl;
+	}
+	fclose(stdout);
+	fprintf(stderr,"dlk19.txt done.\n");
+}
 

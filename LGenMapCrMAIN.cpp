@@ -25,15 +25,17 @@ signed main(int argc, char** argv) {
 	gene_dlk7();
 	// gene_dlk8();
 	gene_dlk9();
-	gene_dlk9_wtcz();
+	// gene_dlk9_wtcz();
 	gene_dlk10();
 	gene_dlk11();
 	// gene_dlk12();
 	gene_dlk13();
 	gene_dlk14();
 	gene_dlk15();
-	gene_dlk16();
+	// gene_dlk16();
 	// gene_dlk17();
+	gene_dlk18();
+	gene_dlk19();
 	return 0;
 }
 

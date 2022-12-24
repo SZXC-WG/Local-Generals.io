@@ -8,8 +8,8 @@
 // TO CHANGE VERSION INFORMATION, EDIT PROJECT OPTIONS...
 //
 1 VERSIONINFO
-FILEVERSION 0,1,0,6
-PRODUCTVERSION 0,1,0,6
+FILEVERSION 0,1,1,9
+PRODUCTVERSION 0,1,1,9
 FILETYPE VFT_APP
 {
   BLOCK "StringFileInfo"
@@ -17,14 +17,14 @@ FILETYPE VFT_APP
     BLOCK "040904E4"
     {
       VALUE "CompanyName", ""
-      VALUE "FileVersion", "0.1.0.6"
-      VALUE "FileDescription", "Developed using the Dev-C++ IDE"
+      VALUE "FileVersion", "0.1.1.9"
+      VALUE "FileDescription", "The Official LocalGen Map Generator"
       VALUE "InternalName", ""
-      VALUE "LegalCopyright", ""
+      VALUE "LegalCopyright", "AppOfficer (c) 2022 All rights reserved."
       VALUE "LegalTrademarks", ""
       VALUE "OriginalFilename", ""
       VALUE "ProductName", ""
-      VALUE "ProductVersion", "0.1.0.6"
+      VALUE "ProductVersion", "0.1.1.9"
     }
   }
   BLOCK "VarFileInfo"
