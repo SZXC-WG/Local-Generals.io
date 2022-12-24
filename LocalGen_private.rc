@@ -8,8 +8,8 @@
 // TO CHANGE VERSION INFORMATION, EDIT PROJECT OPTIONS...
 //
 1 VERSIONINFO
-FILEVERSION 2,0,1,98
-PRODUCTVERSION 2,0,1,98
+FILEVERSION 2,0,2,105
+PRODUCTVERSION 2,0,2,105
 FILETYPE VFT_APP
 {
   BLOCK "StringFileInfo"
@@ -17,14 +17,14 @@ FILETYPE VFT_APP
     BLOCK "040904E4"
     {
       VALUE "CompanyName", ""
-      VALUE "FileVersion", "2.0.1.98"
+      VALUE "FileVersion", "2.0.2.105"
       VALUE "FileDescription", "Localized Generals.io"
       VALUE "InternalName", ""
       VALUE "LegalCopyright", "AppOfficer (c) All rights reserved."
       VALUE "LegalTrademarks", ""
       VALUE "OriginalFilename", ""
       VALUE "ProductName", "Localized Generals.io"
-      VALUE "ProductVersion", "2.0.1.98"
+      VALUE "ProductVersion", "2.0.2.105"
     }
   }
   BLOCK "VarFileInfo"

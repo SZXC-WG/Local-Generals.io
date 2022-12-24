@@ -1,9 +1,7 @@
 #include <bits/stdc++.h>
-#include "WinSock2.h" 
 #include "windows.h"
 #include "conio.h"
 #include "LGenPrint.h"
-#include "LGenInt.h"
 #define SetColor(x) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),x)
 using namespace std;
 int N=26;
@@ -13,7 +11,7 @@ const int T=15;
 const int mountain=90;
 const int tower=15;
 string col[15]= {"","red","yellow","cyan","green","purple","blue","brown","lblue","white","grey"},
-                name[20]= {"","ZLY","LXY","KTQ","XCX","CHR","FTX","SZX","XTK","JYL","LiS"};
+       name[20]= {"","ZLY","LXY","KTQ","XCX","CHR","FTX","SZX","XTK","JYL","LiS"};
 mt19937 mt_rand(GetTickCount());
 string ts(int x) {
 	string s="";
@@ -75,22 +73,22 @@ void print(bool f,string color,char left,char right,int x) {
 	else if(x<=9999) cout<<left<<x/1000<<"K"<<right;
 	else cout<<left<<min(x/10000,9)<<"W"<<right;
 	resetcolor();
-	cout<<"|";
+//	cout<<"|";
 }
 void print_all() {
 	gotoxy(0,0);
-	cout<<"+";
-	for(int i=1; i<=N; ++i) cout<<"----+";
-	cout<<'\n';
+//	cout<<"+";
+//	for(int i=1; i<=N; ++i) cout<<"----+";
+//	cout<<'\n';
 	for(int i=1; i<=N; ++i) {
-		cout<<"|";
+//		cout<<"|";
 		for(int j=1; j<=N; ++j) {
 			int f=0,tp=mp[i][j].type,x=mp[i][j].x;
 			if(i==nowx&&j==nowy) f=1;
 			if(f) SETCOLOR("black");
 			switch(tp) {
-				case -1:if(c[i][j]) cout<<"===="; else cout<<"    "; resetcolor(); cout<<"|"; break;
-				case -2:cout<<"####|"; break;
+				case -1:if(c[i][j]) cout<<"===="; else cout<<"    "; resetcolor(); /*cout<<"|";*/ break;
+				case -2:cout<<"####"/*<<"|"*/; break;
 				case -3:print(f,"white",'[',']',x); break;
 				case 1:print(f,col[1],'$','$',x); break;
 				case 2 ... P:print(f,col[tp],'{','}',x); break;
@@ -99,9 +97,9 @@ void print_all() {
 			}
 		}
 		cout<<'\n';
-		cout<<"+";
-		for(int i=1; i<=N; ++i) cout<<"----+";
-		cout<<'\n';
+//		cout<<"+";
+//		for(int i=1; i<=N; ++i) cout<<"----+";
+//		cout<<'\n';
 	}
 	cout<<'\n';
 	memset(army,0,sizeof(army));
@@ -137,30 +135,31 @@ void print_all() {
 }
 void print() {
 	gotoxy(0,0);
-	cout<<"+";
-	for(int i=1; i<=N; ++i) cout<<"----+";
-	cout<<'\n';
+//	cout<<"+";
+//	for(int i=1; i<=N; ++i) cout<<"----+";
+//	cout<<'\n';
 	for(int i=1; i<=N; ++i) {
-		cout<<"|";
+//		cout<<"|";
 		for(int j=1; j<=N; ++j) {
 			int f=0,tp=mp[i][j].type,x=mp[i][j].x;
 			if(i==nowx&&j==nowy) f=1;
 			if(f) SETCOLOR("black");
 			switch(tp) {
-				case -1:if(c[i][j]) cout<<"===="; else cout<<"    "; resetcolor(); cout<<"|"; break;
-				case -2:if(light[i][j]||see(1,i,j)) cout<<"####|"; else cout<<"####|"; break;
-				case -3:if(light[i][j]||see(1,i,j)) print(f,"white",'[',']',x); else cout<<"####|"; break;
+				case -1:if(c[i][j]) cout<<"===="; else cout<<"    "; resetcolor(); /*cout<<"|";*/ break;
+				case -2:if(light[i][j]||see(1,i,j)) cout<<"####"/*<<"|"*/; else cout<<"####"/*<<"|"*/; break;
+				case -3:if(light[i][j]||see(1,i,j)) print(f,"white",'[',']',x); else cout<<"####"/*<<"|"*/; break;
 				case 1:print(f,col[1],'$','$',x); break;
 				case P+1:print(f,col[1],'[',']',x); break;
 				case P+P+1:print(f,col[1],' ',' ',x); break;
-				case 2 ... P:if(light[i][j]||see(1,i,j)) print(f,col[tp],'{','}',x); else cout<<"    |"; break;
-				case P+2 ... P+P:if(light[i][j]||see(1,i,j)) print(f,col[tp-P],'[',']',x); else if(s[i][j]) cout<<"####|"; else cout<<"####|"; break;
-				case P+P+2 ... P+P+P:if(light[i][j]||see(1,i,j)) print(f,col[tp-P-P],c[i][j]?'=':' ',c[i][j]?'=':' ',x); else cout<<"    |"; break;
+				case 2 ... P:if(light[i][j]||see(1,i,j)) print(f,col[tp],'{','}',x); else cout<<"    "/*<<"|"*/; break;
+				case P+2 ... P+P:if(light[i][j]||see(1,i,j)) print(f,col[tp-P],'[',']',x); else if(s[i][j]) cout<<"####"/*<<"|"*/; else cout<<"####"/*<<"|"*/; break;
+				case P+P+2 ... P+P+P:if(light[i][j]||see(1,i,j)) print(f,col[tp-P-P],c[i][j]?'=':' ',c[i][j]?'=':' ',x); else cout<<"    "/*<<"|"*/; break;
 			}
 		}
-		cout<<"\n+";
-		for(int i=1; i<=N; ++i) cout<<"----+";
-		cout<<'\n';
+		cout<<"\n";
+//		cout<<"+"; 
+//		for(int i=1; i<=N; ++i) cout<<"----+";
+//		cout<<'\n';
 	}
 	cout<<'\n';
 	memset(army,0,sizeof(army));
@@ -690,6 +689,7 @@ __choosemap:
 	strcat(createCmd," ");
 	strcat(createCmd,to_string(__citypower).c_str());
 	system(createCmd);
+	system("cls");
 	getmap(mapfile);
 	print();
 	int t=GetTickCount();
