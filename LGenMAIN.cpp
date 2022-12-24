@@ -1,7 +1,9 @@
 #include <bits/stdc++.h>
+#include "WinSock2.h" 
 #include "windows.h"
 #include "conio.h"
 #include "LGenPrint.h"
+#include "LGenInt.h"
 #define SetColor(x) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),x)
 using namespace std;
 int N=26;
@@ -393,7 +395,7 @@ deque<int> movement;
 void getN() { cout<<"请输入地图大小："; cin>>N; }
 int __citypower;
 void getCity() { cout<<"请输入城池初始力量："; cin>>__citypower; }
-const int dlk_sz[55]= {0,25,40,40,40,49,35,45,50/*40*50*/,50,50,50,50/*50*40*/,50,50,50,-1,50,-1};
+const int dlk_sz[55]= {0,25,40,40,40,49,35,45,50/*40*50*/,50,50,50,50/*50*40*/,50,50,50,-1,50,50,50};
 const int dlk_wtcz_sz[55]= {0,25,-1,-1,-1,-1,-1,-1,40,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 
 struct MapInfoS {
@@ -441,34 +443,32 @@ void MapInfo(int,PAGE);
 void MainPage(PAGE pFrom=pEXIT) {
 __MAINPAGE:
 	system("cls");
-	printText(sCenter,"Welcome to the 欢迎来到"); toNxtLine();
-	printText(sCenter,R"(|                        |   ____             )"); toNxtLine();
-	printText(sCenter,R"(|     _____ _____ _____  |   |     _____ _____)"); toNxtLine();
-	printText(sCenter,R"(|     |   | |     |   |  |   | ___ |   | |   |)"); toNxtLine();
-	printText(sCenter,R"(|     |   | |     |   |  |   |   | |___| |   |)"); toNxtLine();
-	printText(sCenter,R"(|____ |___| |____ |__/|_ |_/ |___| |____ |   |)"); toNxtLine();
+	printText(sLeft,"Welcome to the 欢迎来到"); toNxtLine();
+	printText(sLeft,R"(|                        |   ____             )"); toNxtLine();
+	printText(sLeft,R"(|     _____ _____ _____  |   |     _____ _____)"); toNxtLine();
+	printText(sLeft,R"(|     |   | |     |   |  |   | ___ |   | |   |)"); toNxtLine();
+	printText(sLeft,R"(|     |   | |     |   |  |   |   | |___| |   |)"); toNxtLine();
+	printText(sLeft,R"(|____ |___| |____ |__/|_ |_/ |___| |____ |   |)"); toNxtLine();
 	toNxtLine();
-	printText(sCenter,"Choose one of the options below to begin:"); toNxtLine();
-	printText(sCenter,"(Arrow keys to choose; [ENTER] to confirm)"); toNxtLine();
-	printText(sCenter,"选择下面的选项之一以开始："); toNxtLine();
-	printText(sCenter,"（方向键选择，回车键 [ENTER] 确认）"); toNxtLine();
+	printText(sLeft,"Choose one of the options below to begin:"); toNxtLine();
+	printText(sLeft,"(Arrow keys to choose; [ENTER] to confirm)"); toNxtLine();
+	printText(sLeft,"选择下面的选项之一以开始："); toNxtLine();
+	printText(sLeft,"（方向键选择，回车键 [ENTER] 确认）"); toNxtLine();
 	toNxtLine();
-	printText(sCenter,"  0 Previous Page"); toNxtLine();
-	printText(sCenter,"  1 Choose Map   "); toNxtLine();
-	printText(sCenter,"  2 Exit         ");
+	printText(sLeft,"  0 旧版     Old Version"); toNxtLine();
+	printText(sLeft,"  1 选择地图 Choose Map "); toNxtLine();
+	printText(sLeft,"  2 退出     Exit       ");
 	char ch; int opt=1,optioncnt=2;
-	for(int i=0; i<optioncnt; ++i) printText(sCenter," ",-9),toPreLine();
-	printText(sCenter," ",-9);
+	for(int i=0; i<optioncnt; ++i) printText(sLeft," "),toPreLine();
+	printText(sLeft," ");
 	for(int i=0; i<opt; ++i) toNxtLine();
-	printText(sCenter,">",-9);
+	printText(sLeft,">");
 	for(int i=0; i<optioncnt-opt; ++i) toNxtLine();
 	while(1) {
 		ch=getch();
 		if(ch==13) {
 			switch(opt) {
-				case 0: {
-					return;
-				}
+				case 0: { return; }
 				case 1: ChooseMap(pMain); goto __MAINPAGE;
 				case 2: exit(0);
 			}
@@ -487,10 +487,10 @@ __MAINPAGE:
 				}
 			}
 		}
-		for(int i=0; i<optioncnt; ++i) printText(sCenter," ",-9),toPreLine();
-		printText(sCenter," ",-9);
+		for(int i=0; i<optioncnt; ++i) printText(sLeft," "),toPreLine();
+		printText(sLeft," ");
 		for(int i=0; i<opt; ++i) toNxtLine();
-		printText(sCenter,">",-9);
+		printText(sLeft,">");
 		for(int i=0; i<optioncnt-opt; ++i) toNxtLine();
 	}
 }
@@ -500,6 +500,9 @@ void ChooseMap(PAGE pFrom=pMain) {
 	int lpc=0; int opt=1;
 __CHOOSEMAP:
 	int wx,wy; getwinxy(wx,wy);
+	toSpeLine(0);
+	for(int i=0; i<wx-1; ++i) printText(sLeft,"|",40),toNxtLine();
+	printText(sLeft,"|",40);
 	int lpp=wx-3-1-2;
 	toSpeLine(0);
 	printText(sLeft,"  地图列表 Map Lists: (page "s+to_string(lpc+1)+"/"s+to_string((mapTOT+lpp-1)/lpp)+")     "s); toNxtLine(); 
@@ -551,27 +554,27 @@ __CHOOSEMAP:
 }
 
 void MapInfo(int mapid,PAGE pFrom=pCMap) {
-	/* the map information will be print aligned to right. */
+	/* the map information will be print aligned to left. */
 	toSpeLine(2);
-	printText(sRight,string(20,' ')+maps[mapid].chiname); toNxtLine();
-	printText(sRight,string(40,' ')+maps[mapid].engname); toNxtLine();
+	printText(sLeft,maps[mapid].chiname+string(20,' '),42); toNxtLine();
+	printText(sLeft,maps[mapid].engname+string(40,' '),42); toNxtLine();
 	toNxtLine();
-	printText(sRight,"Author 作者"s); toNxtLine();
-	printText(sRight,string(40,' ')+maps[mapid].auth); toNxtLine();
+	printText(sLeft,"Author 作者"s,42); toNxtLine();
+	printText(sLeft,maps[mapid].auth+string(40,' '),42); toNxtLine();
 	toNxtLine();
-	printText(sRight,string(2,' ')+"Height 行数: "s+to_string(maps[mapid].hei)); toNxtLine();
-	printText(sRight,string(2,' ')+"Width 列数: "s+to_string(maps[mapid].wid)); toNxtLine();
+	printText(sLeft,"Height 行数: "s+to_string(maps[mapid].hei)+string(2,' '),42); toNxtLine();
+	printText(sLeft,"Width 列数: "s+to_string(maps[mapid].wid)+string(2,' '),42); toNxtLine();
 	toNxtLine();
-	printText(sRight,"General Count 王塔（将军）数"s); toNxtLine();
-	printText(sRight,string(4,' ')+to_string(maps[mapid].generalcnt)); toNxtLine();
-	printText(sRight,"Swamp Count 沼泽数"s); toNxtLine();
-	printText(sRight,string(4,' ')+to_string(maps[mapid].swampcnt)); toNxtLine();
-	printText(sRight,"City/Tower Count 城市数"s); toNxtLine();
-	printText(sRight,string(4,' ')+to_string(maps[mapid].citycnt)); toNxtLine();
-	printText(sRight,"Mountain Count 山地数"s); toNxtLine();
-	printText(sRight,string(4,' ')+to_string(maps[mapid].mountaincnt)); toNxtLine();
-	printText(sRight,"Plain Count 平原数"s); toNxtLine();
-	printText(sRight,string(4,' ')+to_string(maps[mapid].plaincnt)); toNxtLine();
+	printText(sLeft,"General Count 王塔（将军）数"s,42); toNxtLine();
+	printText(sLeft,to_string(maps[mapid].generalcnt)+string(4,' '),42); toNxtLine();
+	printText(sLeft,"Swamp Count 沼泽数"s,42); toNxtLine();
+	printText(sLeft,to_string(maps[mapid].swampcnt)+string(4,' '),42); toNxtLine();
+	printText(sLeft,"City/Tower Count 城市数"s,42); toNxtLine();
+	printText(sLeft,to_string(maps[mapid].citycnt)+string(4,' '),42); toNxtLine();
+	printText(sLeft,"Mountain Count 山地数"s,42); toNxtLine();
+	printText(sLeft,to_string(maps[mapid].mountaincnt)+string(4,' '),42); toNxtLine();
+	printText(sLeft,"Plain Count 平原数"s,42); toNxtLine();
+	printText(sLeft,to_string(maps[mapid].plaincnt)+string(4,' '),42); toNxtLine();
 }
 
 /*************** main() function ***************/
@@ -581,23 +584,27 @@ signed main() {
 	ios::sync_with_stdio(false);
 	ShowWindow(hwnd,SW_MAXIMIZE);
 	HideCursor();
-	printText(sCenter,"This is a text before loading is completed."); toNxtLine(); 
-	printText(sCenter,"这是一个在加载前的文本。"); toNxtLine();
-	printText(sCenter,"Please set your font size at this time,"); toNxtLine(); 
-	printText(sCenter,"so you can get a better game feedback."); toNxtLine();
-	printText(sCenter,"请适当调整您的终端字体大小，"); toNxtLine();
-	printText(sCenter,"以获得更好的运行体验。"); toNxtLine();
+	printText(sLeft,"This is a text before loading is completed."); toNxtLine(); 
+	printText(sLeft,"这是一个在加载前的文本。"); toNxtLine();
+	printText(sLeft,"Please set your font size at this time,"); toNxtLine(); 
+	printText(sLeft,"so you can get a better game feedback."); toNxtLine();
+	printText(sLeft,"请适当调整您的终端字体大小，"); toNxtLine();
+	printText(sLeft,"以获得更好的运行体验。"); toNxtLine();
 	toNxtLine();
-	printText(sCenter,"Press any key to continue. . ."); toNxtLine(); 
-	printText(sCenter,"请按任意键继续. . ."); toNxtLine();
+	printText(sLeft,"Press any key to continue. . ."); toNxtLine(); 
+	printText(sLeft,"请按任意键继续. . ."); toNxtLine();
 	getch();
 	toNxtLine();
 	MainPage();
-	system("pause");
-	cout<<"如果你看到了这段文字，说明您已退出新版。"<<endl;
-	cout<<"（但是，在这里，你可以体验旧版。）"<<endl;
+	system("pause & cls");
+	cout<<"If you see this paragraph, then you have"<<endl; 
+	cout<<"successfully exited the new version."<<endl; 
+	cout<<"Here you can use the old version of LocalGen."<<endl; 
+	cout<<"如果您看到了这段文字，说明您已成功退出新版。"<<endl;
+	cout<<"而在这里，您可以使用旧版 LocalGen。"<<endl;
+	cout<<endl;
 	char ch;
-	cout<<"generals.io\npress SPACE to start\n"<<flush;
+	cout<<"local generals.io\npress SPACE to start\n"<<flush;
 	while(getch()!=' ');
 	cout<<endl;
 	cout<<"选择地图：（请保证此程序同一目录下有官方的 createmap.exe 文件）"<<endl;
@@ -617,15 +624,17 @@ signed main() {
 	cout<<"g. 地理课7：经典重现 (dlk7.txt/dlk7_wt.txt)"<<endl;
 	cout<<"h. 地理课8：川流不息2 (dlk8.txt/dlk8_wt.txt)（暂不可用）"<<endl;
 	cout<<"i. 地理课9：欧洲地图 (dlk9.txt/dlk9_wt.txt)"<<endl;
-	cout<<"I. 地理课9 无塔重制版 (dlk9_wtcz.txt)"<<endl;
+	cout<<"I. 地理课9 无塔重制版 (dlk9_wtcz.txt)（暂不可用）"<<endl;
 	cout<<"j. 地理课10：非洲地图 (dlk10.txt/dlk10_wt.txt)"<<endl;
 	cout<<"k. 地理课11：东亚地图 (dlk11.txt/dlk11_wt.txt)"<<endl;
 	cout<<"l. 地理课12：迷宫之战 (dlk12.txt)（暂不可用）"<<endl;
 	cout<<"m. 地理课13：海盗奇兵 (dlk13.txt)"<<endl;
 	cout<<"n. 地理课14：深海礁群 (dlk14.txt)"<<endl;
 	cout<<"o. 地理课15：幽暗溪流 (dlk15.txt)"<<endl;
-	cout<<"p. 地理课16：群岛争霸 (dlk16.txt)"<<endl;
+	cout<<"p. 地理课16：群岛争霸 (dlk16.txt)（暂不可用）"<<endl;
 	cout<<"q. 地理课17：四方争锋 (dlk17.txt/dlk17_wt.txt)（暂不可用）"<<endl;
+	cout<<"r. 地理课18：李联形势 (dlk18.txt)"<<endl;
+	cout<<"s. 地理课19：澳大利亚 (dlk19.txt)"<<endl; 
 	cout<<endl;
 	string mapfile;
 __choosemap:
@@ -649,12 +658,12 @@ __choosemap:
 			if(tp=='0') mapfile="dlk"s+nostr+".txt"s;
 			else mapfile="dlk"s+nostr+"_wt.txt"s;
 		} break;
-		case 'A': case 'I': {
+		case 'A': /*case 'I':*/ {
 			N=dlk_wtcz_sz[ch-'A'+1];
 			if(ch-'A'==0) mapfile="dlk_wtcz.txt";
 			else mapfile="dlk"s+to_string(ch-'A'+1)+"_wtcz.txt"s;
 		} break;
-		case 'e': case 'm'...'p': {
+		case 'e': case 'm'...'o': case 'r'...'s': {
 			int no=ch-'a'+1;
 			string nostr;
 			if(no==1) nostr="";
