@@ -399,36 +399,37 @@ const int dlk_wtcz_sz[55]= {0,25,-1,-1,-1,-1,-1,-1,40,-1,-1,-1,-1,-1,-1,-1,-1,-1
 
 struct MapInfoS {
 	int id;	string chiname; string engname; string auth; int hei; int wid; int generalcnt; int swampcnt; int citycnt; int mountaincnt; int plaincnt;
+	MapInfoS() = default; ~MapInfoS() = default;
 };
 const int mapTOT=25;
 MapInfoS maps[205] = {
 	/* id , chiname , engname , auth , hei , wid , generalcnt , swampcnt , citycnt , mountaincnt , plaincnt */
-	{0,"空","void","void",-2,-2,-2,-2,-2,-2,-2},
-	{1,"随机地图","Random","LocalGen",-1,-1,10,-1,-1,-1,-1},
-	{2,"完全塔","Full Tower/City","LocalGen",-1,-1,10,0,-1,0,0},
-	{3,"完全沼泽","Full Swamp","LocalGen",-1,-1,10,-1,0,0,0},
-	{4,"大平原","Plain","LocalGen",-1,-1,10,0,0,0,-1},
-	{5,"地理课","Geography Class","nfls_old_salty_fish",25,25,10,102,58,170,285},
-	{6,"地理课 无塔重制版","Geography Class (No General Remake)","nfls_old_salty_fish",25,25,0,136,52,172,265},
-	{7,"地理课2","Geography Class 2","nfls_old_salty_fish",40,40,15,382,184,354,665},
-	{8,"地理课3：川流不息","Geography Class 3: Endless Rivers","nfls_old_salty_fish",40,40,14,642,93,309,542},
-	{9,"地理课4：山巅之湖","Geography Class 4: Lake Upon the Mountain","nfls_old_salty_fish",40,40,14,674,136,567,209},
-	{10,"地理课5：沼泽迷宫","Geography Class 5: Swamp Labyrinth","AppOfficer",49,49,12,1085,218,1066,20},
-	{11,"地理课6：中央宝藏","Geography Class 6: Middle Treasure","AppOfficer",35,35,8,396,119,504,198},
-	{12,"地理课7：经典重现","Geography Class 7: Classic Recurred","nfls_old_salty_fish",45,45,25,491,165,603,741},
-	{13,"地理课8：川流不息2","Geography Class 8: Endless Rivers 2","AppOfficer",40,50,15,685,177,445,678},
-	{14,"地理课9：欧洲地图","Geography Class 9: Europe","nfls_old_salty_fish",50,50,19,845,136,348,1152},
-	{15,"地理课9 无塔重制版","Geography Class 9: Europe (No General Remake)","nfls_old_salty_fish",40,40,0,650,92,239,619},
-	{16,"地理课10：非洲地图","Geography Class 10: Africa","nfls_old_salty_fish",50,50,29,1338,164,331,638},
-	{17,"地理课11：东亚地图","Geography Class 11: East Asia","AppOfficer",50,50,24,678,215,592,991},
-	{18,"地理课12：迷宫之战","Geography Class 12: Labyrinth Battle","nfls_old_salty_fish",50,40,0,0,182,646,1172},
-	{19,"地理课13：海盗奇兵","Geography Class 13: Pirates","nfls_old_salty_fish",50,50,0,1259,208,0,1033},
-	{20,"地理课14：群岛争霸","Geography Class 14: Islands","ktq_cpp",50,50,0,1620,197,265,418},
-	{21,"地理课15：幽暗溪流","Geography Class 15: Gloomy Streams","nfls_old_salty_fish",50,50,0,1038,189,998,285},
-	{22,"地理课16：深海礁群","Geography Class 16: Deep Sea Reefs","chrhaa",50,50,0,2194,88,208,10},
-	{23,"地理课17：四方争锋","Geography Class 17: Directions Striving","chrhaa",43,43,4,428,121,260,1036},
-	{24,"地理课18：李联形势","Geography Class 18: LSZC Republic","AppOfficer & nfls_old_salty_fish",50,50,0,999,224,462,815},
-	{25,"地理课19：澳大利亚","Geography Class 19: Australia","chrhaa",50,50,0,1348,188,488,476},
+	{0, "空","void","void",-2,-2,-2,-2,-2,-2,-2},
+	{1, "随机地图",           "Random",                                        "LocalGen",-1,-1,10,-1,-1,-1,-1},
+	{2, "完全塔",             "Full Tower/City",                               "LocalGen",-1,-1,10,0,-1,0,0},
+	{3, "完全沼泽",           "Full Swamp",                                    "LocalGen",-1,-1,10,-1,0,0,0},
+	{4, "大平原",             "Plain",                                         "LocalGen",-1,-1,10,0,0,0,-1},
+	{5, "地理课",             "Geography Class",                               "nfls_old_salty_fish",25,25,10,102,58,170,285},
+	{6, "地理课 无塔重制版",  "Geography Class (No General Remake)",           "nfls_old_salty_fish",25,25,0,136,52,172,265},
+	{7, "地理课2",            "Geography Class 2",                             "nfls_old_salty_fish",40,40,15,382,184,354,665},
+	{8, "地理课3：川流不息",  "Geography Class 3: Endless Rivers",             "nfls_old_salty_fish",40,40,14,642,93,309,542},
+	{9, "地理课4：山巅之湖",  "Geography Class 4: Lake Upon the Mountain",     "nfls_old_salty_fish",40,40,14,674,136,567,209},
+	{10,"地理课5：沼泽迷宫",  "Geography Class 5: Swamp Labyrinth",            "AppOfficer",49,49,12,1085,218,1066,20},
+	{11,"地理课6：中央宝藏",  "Geography Class 6: Middle Treasure",            "AppOfficer",35,35,8,396,119,504,198},
+	{12,"地理课7：经典重现",  "Geography Class 7: Classic Recurred",           "nfls_old_salty_fish",45,45,25,491,165,603,741},
+	{13,"地理课8：川流不息2", "Geography Class 8: Endless Rivers 2",           "AppOfficer",40,50,15,685,177,445,678},
+	{14,"地理课9：欧洲地图",  "Geography Class 9: Europe",                     "nfls_old_salty_fish",50,50,19,845,136,348,1152},
+	{15,"地理课9 无塔重制版", "Geography Class 9: Europe (No General Remake)", "nfls_old_salty_fish",40,40,0,650,92,239,619},
+	{16,"地理课10：非洲地图", "Geography Class 10: Africa",                    "nfls_old_salty_fish",50,50,29,1338,164,331,638},
+	{17,"地理课11：东亚地图", "Geography Class 11: East Asia",                 "AppOfficer",50,50,24,678,215,592,991},
+	{18,"地理课12：迷宫之战", "Geography Class 12: Labyrinth Battle",          "nfls_old_salty_fish",50,40,0,0,182,646,1172},
+	{19,"地理课13：海盗奇兵", "Geography Class 13: Pirates",                   "nfls_old_salty_fish",50,50,0,1259,208,0,1033},
+	{20,"地理课14：群岛争霸", "Geography Class 14: Islands",                   "ktq_cpp",50,50,0,1620,197,265,418},
+	{21,"地理课15：幽暗溪流", "Geography Class 15: Gloomy Streams",            "nfls_old_salty_fish",50,50,0,1038,189,998,285},
+	{22,"地理课16：深海礁群", "Geography Class 16: Deep Sea Reefs",            "chrhaa",50,50,10,2194,88,208,0},
+	{23,"地理课17：四方争锋", "Geography Class 17: Directions Striving",       "chrhaa",43,43,4,428,121,260,1036},
+	{24,"地理课18：李联形势", "Geography Class 18: LSZC Republic",             "AppOfficer & nfls_old_salty_fish",50,50,0,999,224,462,815},
+	{25,"地理课19：澳大利亚", "Geography Class 19: Australia",                 "chrhaa",50,50,0,1348,188,488,476},
 };
 
 /*************** screen pages ***************/
@@ -438,6 +439,8 @@ enum PAGE {pEXIT,pMain,pCMap};
 void MainPage(PAGE);
 void ChooseMap(PAGE);
 void MapInfo(int,PAGE);
+void ViewMap(int,PAGE);
+void StartGame(int,PAGE);
 
 void MainPage(PAGE pFrom=pEXIT) {
 __MAINPAGE:
@@ -525,6 +528,19 @@ __CHOOSEMAP:
 				if(lpc>0) { --lpc; goto __CHOOSEMAP; }
 			} else if(opt==lpp+1) /* lpp+1: Next Page */ {
 				if((lpc+1)*lpp<mapTOT) { ++lpc; goto __CHOOSEMAP; }
+			} else {
+				int id=lpc*lpp+opt;
+				toSpeLine(22);
+				printText(sLeft,"Press [Esc] to choose another map.",42); toNxtLine();
+				printText(sLeft,"按下 [Esc] 回到选图界面。",42); toNxtLine();
+				toNxtLine();
+				printText(sLeft,"  0. 开始     Start   ",42); toNxtLine();
+				printText(sLeft,"  1. 查看地图 View Map",42); toNxtLine();
+				char ich;
+				while(1) {
+					ich=getch();
+					if(ich==27/*[ESC]*/) break;
+				}
 			}
 		} else if(ch==27/*[ESC]*/) {
 			return;
@@ -574,6 +590,18 @@ void MapInfo(int mapid,PAGE pFrom=pCMap) {
 	printText(sLeft,to_string(maps[mapid].mountaincnt)+string(4,' '),42); toNxtLine();
 	printText(sLeft,"Plain Count 平原数"s,42); toNxtLine();
 	printText(sLeft,to_string(maps[mapid].plaincnt)+string(4,' '),42); toNxtLine();
+	toNxtLine();
+	printText(sLeft,string(40,' '),42); toNxtLine();
+	printText(sLeft,string(40,' '),42); toNxtLine();
+	toNxtLine();
+	printText(sLeft,string(40,' '),42); toNxtLine();
+	printText(sLeft,string(40,' '),42); toNxtLine();
+}
+
+void ViewMap(int mapid, PAGE pFrom=pCMap) {
+}
+
+void StartGame(int mapid, PAGE pFrom) {
 }
 
 /*************** main() function ***************/
