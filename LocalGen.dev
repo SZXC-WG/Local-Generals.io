@@ -27,26 +27,26 @@ CommandLine=
 Folders=
 IncludeVersionInfo=1
 SupportXPThemes=0
-CompilerSet=1
+CompilerSet=6
 CompilerSettings=0000000000000000001000000
-UnitCount=2
+UnitCount=3
 
 [VersionInfo]
 Major=2
 Minor=0
 Release=2
-Build=105
+Build=112
 LanguageID=1033
 CharsetID=1252
 CompanyName=
-FileVersion=2.0.2.105
+FileVersion=2.0.2.112
 FileDescription=Localized Generals.io
 InternalName=
 LegalCopyright=AppOfficer (c) All rights reserved.
 LegalTrademarks=
 OriginalFilename=
 ProductName=Localized Generals.io
-ProductVersion=2.0.2.105
+ProductVersion=2.0.2.112
 AutoIncBuildNr=1
 SyncProduct=1
 
@@ -62,6 +62,16 @@ BuildCmd=
 
 [Unit2]
 FileName=LGenPrint.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit3]
+FileName=LGenMaps.h
 CompileCpp=1
 Folder=
 Compile=1

@@ -1,3 +1,5 @@
+/* This is main program of LocalGen.                   */
+/* Copyright (c) 2022 AppOfficer; All rights reserved. */
 #include <bits/stdc++.h>
 #include "windows.h"
 #include "conio.h"
@@ -13,14 +15,7 @@ const int tower=15;
 string col[15]= {"","red","yellow","cyan","green","purple","blue","brown","lblue","white","grey"},
        name[20]= {"","ZLY","LXY","KTQ","XCX","CHR","FTX","SZX","XTK","JYL","LiS"};
 mt19937 mt_rand(GetTickCount());
-string ts(int x) {
-	string s="";
-	while(x) {
-		s=(char)((x%10)^48)+s;
-		x/=10;
-	}
-	return s;
-}
+string ts(int x) { return to_string(x); }
 
 struct block {int type,x;};
 int cnt,cnt2,dx[4] {-1,0,1,0},dy[4] {0,-1,0,1},nowx,nowy,
@@ -395,7 +390,7 @@ void getN() { cout<<"请输入地图大小："; cin>>N; }
 int __citypower;
 void getCity() { cout<<"请输入城池初始力量："; cin>>__citypower; }
 const int dlk_sz[55]= {0,25,40,40,40,49,35,45,50/*40*50*/,50,50,50,50/*50*40*/,50,50,50,-1,50,50,50};
-const int dlk_wtcz_sz[55]= {0,25,-1,-1,-1,-1,-1,-1,40,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+const int dlk_wtcz_sz[55]= {0,25,-1,-1,-1,-1,-1,-1,-1,50,-1,50,-1,-1,-1,-1,-1,-1,-1};
 
 struct MapInfoS {
 	int id;	string chiname; string engname; string auth; int hei; int wid; int generalcnt; int swampcnt; int citycnt; int mountaincnt; int plaincnt;
@@ -410,7 +405,7 @@ MapInfoS maps[205] = {
 	{3, "完全沼泽",           "Full Swamp",                                    "LocalGen",-1,-1,10,-1,0,0,0},
 	{4, "大平原",             "Plain",                                         "LocalGen",-1,-1,10,0,0,0,-1},
 	{5, "地理课",             "Geography Class",                               "nfls_old_salty_fish",25,25,10,102,58,170,285},
-	{6, "地理课 无塔重制版",  "Geography Class (No General Remake)",           "nfls_old_salty_fish",25,25,0,136,52,172,265},
+	{6, "地理课 无塔重制版",  "Geography Class (NGR)",                         "nfls_old_salty_fish",25,25,0,136,52,172,265},
 	{7, "地理课2",            "Geography Class 2",                             "nfls_old_salty_fish",40,40,15,382,184,354,665},
 	{8, "地理课3：川流不息",  "Geography Class 3: Endless Rivers",             "nfls_old_salty_fish",40,40,14,642,93,309,542},
 	{9, "地理课4：山巅之湖",  "Geography Class 4: Lake Upon the Mountain",     "nfls_old_salty_fish",40,40,14,674,136,567,209},
@@ -419,9 +414,10 @@ MapInfoS maps[205] = {
 	{12,"地理课7：经典重现",  "Geography Class 7: Classic Recurred",           "nfls_old_salty_fish",45,45,25,491,165,603,741},
 	{13,"地理课8：川流不息2", "Geography Class 8: Endless Rivers 2",           "AppOfficer",40,50,15,685,177,445,678},
 	{14,"地理课9：欧洲地图",  "Geography Class 9: Europe",                     "nfls_old_salty_fish",50,50,19,845,136,348,1152},
-	{15,"地理课9 无塔重制版", "Geography Class 9: Europe (No General Remake)", "nfls_old_salty_fish",40,40,0,650,92,239,619},
+	{15,"地理课9 无塔重制版", "Geography Class 9: Europe (NGR)", "nfls_old_salty_fish",40,40,0,650,92,239,619},
 	{16,"地理课10：非洲地图", "Geography Class 10: Africa",                    "nfls_old_salty_fish",50,50,29,1338,164,331,638},
 	{17,"地理课11：东亚地图", "Geography Class 11: East Asia",                 "AppOfficer",50,50,24,678,215,592,991},
+	{18,"地理课11 无塔重制版","Geography Class 11: East Asia (NGR)",           "AppOfficer",50,50,0,807,317,563,813},
 	{18,"地理课12：迷宫之战", "Geography Class 12: Labyrinth Battle",          "nfls_old_salty_fish",50,40,0,0,182,646,1172},
 	{19,"地理课13：海盗奇兵", "Geography Class 13: Pirates",                   "nfls_old_salty_fish",50,50,0,1259,208,0,1033},
 	{20,"地理课14：群岛争霸", "Geography Class 14: Islands",                   "ktq_cpp",50,50,0,1620,197,265,418},
@@ -540,6 +536,9 @@ __CHOOSEMAP:
 				while(1) {
 					ich=getch();
 					if(ich==27/*[ESC]*/) break;
+					else if(ich==0) {
+					} else if(ich==1) {
+					}
 				}
 			}
 		} else if(ch==27/*[ESC]*/) {
@@ -571,25 +570,25 @@ __CHOOSEMAP:
 void MapInfo(int mapid,PAGE pFrom=pCMap) {
 	/* the map information will be print aligned to left. */
 	toSpeLine(2);
-	printText(sLeft,maps[mapid].chiname+string(20,' '),42); toNxtLine();
-	printText(sLeft,maps[mapid].engname+string(40,' '),42); toNxtLine();
+	printText(sLeft,string(20,' '),42); printText(sLeft,maps[mapid].chiname,42); toNxtLine();
+	printText(sLeft,string(55,' '),42); printText(sLeft,maps[mapid].engname,42); toNxtLine();
 	toNxtLine();
 	printText(sLeft,"Author 作者"s,42); toNxtLine();
-	printText(sLeft,maps[mapid].auth+string(40,' '),42); toNxtLine();
+	printText(sLeft,string(40,' '),42); printText(sLeft,maps[mapid].auth,42); toNxtLine();
 	toNxtLine();
 	printText(sLeft,"Height 行数: "s+to_string(maps[mapid].hei)+string(2,' '),42); toNxtLine();
 	printText(sLeft,"Width 列数: "s+to_string(maps[mapid].wid)+string(2,' '),42); toNxtLine();
 	toNxtLine();
 	printText(sLeft,"General Count 王塔（将军）数"s,42); toNxtLine();
-	printText(sLeft,to_string(maps[mapid].generalcnt)+string(4,' '),42); toNxtLine();
+	printText(sLeft,string(4,' '),42); printText(sLeft,to_string(maps[mapid].generalcnt),42); toNxtLine();
 	printText(sLeft,"Swamp Count 沼泽数"s,42); toNxtLine();
-	printText(sLeft,to_string(maps[mapid].swampcnt)+string(4,' '),42); toNxtLine();
+	printText(sLeft,string(4,' '),42); printText(sLeft,to_string(maps[mapid].swampcnt),42); toNxtLine();
 	printText(sLeft,"City/Tower Count 城市数"s,42); toNxtLine();
-	printText(sLeft,to_string(maps[mapid].citycnt)+string(4,' '),42); toNxtLine();
+	printText(sLeft,string(4,' '),42); printText(sLeft,to_string(maps[mapid].citycnt),42); toNxtLine();
 	printText(sLeft,"Mountain Count 山地数"s,42); toNxtLine();
-	printText(sLeft,to_string(maps[mapid].mountaincnt)+string(4,' '),42); toNxtLine();
+	printText(sLeft,string(4,' '),42); printText(sLeft,to_string(maps[mapid].mountaincnt),42); toNxtLine();
 	printText(sLeft,"Plain Count 平原数"s,42); toNxtLine();
-	printText(sLeft,to_string(maps[mapid].plaincnt)+string(4,' '),42); toNxtLine();
+	printText(sLeft,string(4,' '),42); printText(sLeft,to_string(maps[mapid].plaincnt),42); toNxtLine();
 	toNxtLine();
 	printText(sLeft,string(40,' '),42); toNxtLine();
 	printText(sLeft,string(40,' '),42); toNxtLine();
@@ -651,9 +650,10 @@ signed main() {
 	cout<<"g. 地理课7：经典重现 (dlk7.txt/dlk7_wt.txt)"<<endl;
 	cout<<"h. 地理课8：川流不息2 (dlk8.txt/dlk8_wt.txt)（暂不可用）"<<endl;
 	cout<<"i. 地理课9：欧洲地图 (dlk9.txt/dlk9_wt.txt)"<<endl;
-	cout<<"I. 地理课9 无塔重制版 (dlk9_wtcz.txt)（暂不可用）"<<endl;
+	cout<<"I. 地理课9 无塔重制版 (dlk9_wtcz.txt)"<<endl;
 	cout<<"j. 地理课10：非洲地图 (dlk10.txt/dlk10_wt.txt)"<<endl;
 	cout<<"k. 地理课11：东亚地图 (dlk11.txt/dlk11_wt.txt)"<<endl;
+	cout<<"K. 地理课11: 无塔重制版 (dlk11_wtcz.txt)"<<endl;
 	cout<<"l. 地理课12：迷宫之战 (dlk12.txt)（暂不可用）"<<endl;
 	cout<<"m. 地理课13：海盗奇兵 (dlk13.txt)"<<endl;
 	cout<<"n. 地理课14：深海礁群 (dlk14.txt)"<<endl;
@@ -685,7 +685,7 @@ __choosemap:
 			if(tp=='0') mapfile="dlk"s+nostr+".txt"s;
 			else mapfile="dlk"s+nostr+"_wt.txt"s;
 		} break;
-		case 'A': /*case 'I':*/ {
+		case 'A': case 'I': case 'K': {
 			N=dlk_wtcz_sz[ch-'A'+1];
 			if(ch-'A'==0) mapfile="dlk_wtcz.txt";
 			else mapfile="dlk"s+to_string(ch-'A'+1)+"_wtcz.txt"s;
