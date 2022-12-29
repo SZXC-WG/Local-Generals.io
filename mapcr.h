@@ -424,7 +424,7 @@ void gene_dlk9() {
 	fprintf(stderr,"dlk9_wt.txt done.\n");
 }
 void gene_dlk9_wtcz() {
-	int n=40;
+	int n=50;
 	freopen("dlk9_wtcz.txt","w",stdout);
 	cout << n << endl;
 	for(int i=0; i<m; ++i) {

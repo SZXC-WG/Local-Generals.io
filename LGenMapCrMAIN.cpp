@@ -25,7 +25,7 @@ signed main(int argc, char** argv) {
 	gene_dlk7();
 	// gene_dlk8();
 	gene_dlk9();
-	// gene_dlk9_wtcz();
+	gene_dlk9_wtcz();
 	gene_dlk10();
 	gene_dlk11();
 	gene_dlk11_wtcz();
