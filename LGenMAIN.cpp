@@ -4,6 +4,7 @@
 #include "windows.h"
 #include "conio.h"
 #include "LGenPrint.h"
+#include "LGenMaps.h"
 #define SetColor(x) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),x)
 using namespace std;
 int N=26;
@@ -414,7 +415,7 @@ MapInfoS maps[205] = {
 	{12,"地理课7：经典重现",  "Geography Class 7: Classic Recurred",           "nfls_old_salty_fish",45,45,25,491,165,603,741},
 	{13,"地理课8：川流不息2", "Geography Class 8: Endless Rivers 2",           "AppOfficer",40,50,15,685,177,445,678},
 	{14,"地理课9：欧洲地图",  "Geography Class 9: Europe",                     "nfls_old_salty_fish",50,50,19,845,136,348,1152},
-	{15,"地理课9 无塔重制版", "Geography Class 9: Europe (NGR)", "nfls_old_salty_fish",40,40,0,650,92,239,619},
+	{15,"地理课9 无塔重制版", "Geography Class 9: Europe (NGR)", "nfls_old_salty_fish",50,50,0,650,92,239,619},
 	{16,"地理课10：非洲地图", "Geography Class 10: Africa",                    "nfls_old_salty_fish",50,50,29,1338,164,331,638},
 	{17,"地理课11：东亚地图", "Geography Class 11: East Asia",                 "AppOfficer",50,50,24,678,215,592,991},
 	{18,"地理课11 无塔重制版","Geography Class 11: East Asia (NGR)",           "AppOfficer",50,50,0,807,317,563,813},
@@ -428,15 +429,63 @@ MapInfoS maps[205] = {
 	{25,"地理课19：澳大利亚", "Geography Class 19: Australia",                 "chrhaa",50,50,0,1348,188,488,476},
 };
 
+void copyMap(int mapid) {
+	N=max(maps[mapid].hei,maps[mapid].wid);
+	for(int i=1; i<=N; ++i)
+		for(int j=1; j<=N; ++j) mp[i][j]= {-2,0};
+	int h=maps[mapid].hei,w=maps[mapid].wid;
+	for(int i=1; i<=h; ++i)
+		for(int j=1; j<=w; ++j) mp[i][j]= {-1,0};
+	vector<pair<int,pair<int,int>>> home;
+	for(int i=1; i<=h; ++i) {
+		for(int j=1; j<=w; ++j) {
+			switch(mapG[mapid].geo[(i-1)*w+j-1]) {
+				case 'S': c[i][j]=1; break;
+				case 'G': home.push_back({0,{i,j}}); break;
+				case 'P': mp[i][j].type=-1; break;
+				case 'M': mp[i][j].type=-2; break;
+				case 'C': mp[i][j].type=-3; break;
+			}
+		}
+	}
+	for(int i=1; i<=h; ++i) {
+		for(int j=1; j<=w; ++j) {
+			int p=0,q=((i-1)*w+j-1)*mapG[mapid].aBits;
+			for(int k=q; k<q+mapG[mapid].aBits; ++k) p=p*26+tolower(mapG[mapid].army[k])-'a';
+			if(isupper(mapG[mapid].army[q])) p=-p;
+			mp[i][j].x=p;
+		}
+	}
+	for(int i=1; i<=h; ++i) for(int j=1; j<=w; ++j) light[i][j]=mapG[mapid].light[(i-1)*w+j-1]-'0';
+	while(home.size()<P) {
+		int x,y;
+		do x=mt_rand()%h+1,y=mt_rand()%w+1;
+		while(mapG[mapid].geo[(x-1)*w+y-1]!='P'||find(home.begin(),home.end(),make_pair(0,make_pair(x,y)))!=home.end());
+		home.push_back({0,{x,y}});
+	}
+	sort(home.begin(),home.end());
+	for(int i=1; i<home.size(); ++i) {
+		int r=mt_rand()%(i+1);
+		swap(home[i],home[r]);
+	}
+	for(int i=1; i<=P; ++i) {
+		px[i]=hx[i]=home[i-1].second.first,py[i]=hy[i]=home[i-1].second.second;
+		mp[hx[i]][hy[i]]=(block) {i,1};
+		if(i==1) nowx=hx[i],nowy=hy[i];
+		s[hx[i]][hy[i]]=1;
+	}
+}
+
 /*************** screen pages ***************/
 
-enum PAGE {pEXIT,pMain,pCMap};
+enum PAGE {pEXIT,pMain,pCMap,pVMAP,pSGam,pIGam};
 
 void MainPage(PAGE);
 void ChooseMap(PAGE);
 void MapInfo(int,PAGE);
 void ViewMap(int,PAGE);
 void StartGame(int,PAGE);
+void InGame(PAGE);
 
 void MainPage(PAGE pFrom=pEXIT) {
 __MAINPAGE:
@@ -536,8 +585,10 @@ __CHOOSEMAP:
 				while(1) {
 					ich=getch();
 					if(ich==27/*[ESC]*/) break;
-					else if(ich==0) {
-					} else if(ich==1) {
+					else if(ich=='0') {
+						StartGame(id,pCMap);
+						goto __CHOOSEMAP;
+					} else if(ich=='1') {
 					}
 				}
 			}
@@ -601,6 +652,152 @@ void ViewMap(int mapid, PAGE pFrom=pCMap) {
 }
 
 void StartGame(int mapid, PAGE pFrom) {
+	copyMap(mapid);
+	toNxtLine();
+	printText(sLeft,"是否在家保留总兵力的 15%？",42); toNxtLine();
+	printText(sLeft,"Do you want to save 15% of your total army at your general?",42); toNxtLine();
+	printText(sLeft,"(Y/n)",42);
+	char ch;
+	do ch=getch(); while(ch!='Y'&&ch!='y'&&ch!='N'&&ch!='n');
+	if(ch=='Y'||ch=='y') K=1; else K=0;
+	toNxtLine(); toNxtLine();
+	printText(sLeft,"是否开启作弊？",42); toNxtLine();
+	printText(sLeft,"Turn on cheating mode?",42); toNxtLine();
+	printText(sLeft,"(Y/n)",42);
+	do ch=getch(); while(ch!='Y'&&ch!='y'&&ch!='N'&&ch!='n');
+	if(ch=='Y'||ch=='y') cheat=1; else cheat=0; 
+	toNxtLine();
+	InGame(pSGam);
+}
+
+void InGame(PAGE pFrom=pSGam) {
+	system("cls");
+	print();
+	int t=GetTickCount();
+	int lstt=t;
+	cnt=0;
+	while(1) {
+		if(kbhit()) {
+			char ch=getch();
+			if(ch=='e') {
+				if(!movement.empty()) movement.pop_back();
+			} else if(ch=='q') movement.clear();
+			else if(ch=='w') movement.push_back(0);
+			else if(ch=='a') movement.push_back(1);
+			else if(ch=='s') movement.push_back(2);
+			else if(ch=='d') movement.push_back(3);
+			else if(ch=='h') movement.push_back(4);
+			else if(ch==' ') {
+				ch='1';
+				while(ch!=' ') ch=getch();
+			} else if(ch==27/*[ESC]*/) {
+				Sleep(2000);
+				system("cls");
+				break;
+			}
+		}
+		int nt=GetTickCount();
+		if(nt-t<d) continue;
+		t=nt;
+		++cnt;
+		if(cnt>=T) {
+			cnt=0;
+			for(int i=1; i<=N; ++i) for(int j=1; j<=N; ++j) if(mp[i][j].type>=P+P+1) ++mp[i][j].x;
+		}
+		for(int i=1; i<=N; ++i) for(int j=1; j<=N; ++j) {
+				if(mp[i][j].type<=P+P&&mp[i][j].type>=1) ++mp[i][j].x;
+				else if(mp[i][j].type>P+P&&c[i][j]) {
+					--mp[i][j].x;
+					if(mp[i][j].x==0) mp[i][j].type=-1;
+				}
+			}
+		while(!movement.empty()) {
+			bool B=0;
+			int m=movement.front();
+			movement.pop_front();
+			if(m==4) nowx=hx[1],nowy=hy[1];
+			else {
+				int nx=nowx+dx[m],ny=nowy+dy[m];
+				if(nx<1||ny<1||nx>N||ny>N||mp[nx][ny].type==-2);
+				else {
+					int tp=mp[nowx][nowy].type,x=mp[nowx][nowy].x,nt=mp[nx][ny].type;
+					int tmp=0;
+					if(tp==1&&seen[1]&&K) {
+						tmp=army[1]-land[1];
+						tmp*=3;
+						tmp/=20;
+						if(army[1]>=100) {
+							if(x<=tmp) tmp=x-1;
+							else tmp=x-tmp;
+						}
+					}
+					x-=tmp;
+					if((tp!=1&&tp!=P+1&&tp!=P+P+1)||x<=1);
+					else {
+						if(nt==1||nt==P+1||nt==P+P+1) mp[nx][ny].x+=x-1;
+						else if(x-1>mp[nx][ny].x) {
+							mp[nx][ny].x=x-1-mp[nx][ny].x;
+							if(nt==-3) mp[nx][ny].type=P+1;
+							else if(nt==-1) mp[nx][ny].type=P+P+1;
+							else if(nt<=P) kill(1,nt);
+							else if(nt<=P+P) mp[nx][ny].type=P+1;
+							else mp[nx][ny].type=P+P+1;
+						} else mp[nx][ny].x-=x-1;
+						mp[nowx][nowy].x=1;
+						mp[nowx][nowy].x+=tmp;
+						B=1;
+					}
+					nowx=nx;
+					nowy=ny;
+				}
+			}
+			if(B) break;
+		}
+		for(int i=2; i<=P; ++i) {
+			int m=getmove(i);
+			if(m==4) px[i]=hx[i],py[i]=hy[i];
+			else {
+				int nx=px[i]+dx[m],ny=py[i]+dy[m];
+				if(nx<1||ny<1||nx>N||ny>N||mp[nx][ny].type==-2);
+				else {
+					int tp=mp[px[i]][py[i]].type,x=mp[px[i]][py[i]].x,nt=mp[nx][ny].type;
+					if((tp!=i&&tp!=i+P&&tp!=i+P+P)||x<=1);
+					else {
+						int tmp=0;
+						if(tp==i&&seen[i]) {
+							tmp=army[i]-land[i];
+							tmp*=3; tmp/=20;
+							if(army[i]>=100) {
+								if(x<=tmp) tmp=x-1;
+								else tmp=x-tmp;
+							}
+						}
+						x-=tmp;
+						if(nt==i||nt==i+P||nt==i+P+P) mp[nx][ny].x+=x-1;
+						else if(x-1>mp[nx][ny].x) {
+							mp[nx][ny].x=x-1-mp[nx][ny].x;
+							if(nt==-3) mp[nx][ny].type=i+P;
+							else if(nt==-1) mp[nx][ny].type=i+P+P;
+							else if(nt<=P) kill(i,nt);
+							else if(nt<=P+P) mp[nx][ny].type=i+P;
+							else mp[nx][ny].type=i+P+P;
+						} else mp[nx][ny].x-=x-1;
+						mp[px[i]][py[i]].x=1;
+						mp[px[i]][py[i]].x+=tmp;
+					}
+					lx[i]=px[i];
+					ly[i]=py[i];
+					px[i]=nx;
+					py[i]=ny;
+				}
+			}
+			cout<<endl;
+		}
+		if(t-lstt>5000) system("cls"),lstt=t;
+		if(alive&&!cheat) print();
+		else print_all();
+		getseen();
+	}
 }
 
 /*************** main() function ***************/
