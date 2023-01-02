@@ -694,6 +694,8 @@ void InGame(PAGE pFrom=pSGam) {
 				Sleep(2000);
 				system("cls");
 				break;
+			} else if(ch=='\b') {
+				alive=0;
 			}
 		}
 		int nt=GetTickCount();
@@ -720,32 +722,34 @@ void InGame(PAGE pFrom=pSGam) {
 				int nx=nowx+dx[m],ny=nowy+dy[m];
 				if(nx<1||ny<1||nx>N||ny>N||mp[nx][ny].type==-2);
 				else {
-					int tp=mp[nowx][nowy].type,x=mp[nowx][nowy].x,nt=mp[nx][ny].type;
-					int tmp=0;
-					if(tp==1&&seen[1]&&K) {
-						tmp=army[1]-land[1];
-						tmp*=3;
-						tmp/=20;
-						if(army[1]>=100) {
-							if(x<=tmp) tmp=x-1;
-							else tmp=x-tmp;
+					if(alive) {
+						int tp=mp[nowx][nowy].type,x=mp[nowx][nowy].x,nt=mp[nx][ny].type;
+						int tmp=0;
+						if(tp==1&&seen[1]&&K) {
+							tmp=army[1]-land[1];
+							tmp*=3;
+							tmp/=20;
+							if(army[1]>=100) {
+								if(x<=tmp) tmp=x-1;
+								else tmp=x-tmp;
+							}
 						}
-					}
-					x-=tmp;
-					if((tp!=1&&tp!=P+1&&tp!=P+P+1)||x<=1);
-					else {
-						if(nt==1||nt==P+1||nt==P+P+1) mp[nx][ny].x+=x-1;
-						else if(x-1>mp[nx][ny].x) {
-							mp[nx][ny].x=x-1-mp[nx][ny].x;
-							if(nt==-3) mp[nx][ny].type=P+1;
-							else if(nt==-1) mp[nx][ny].type=P+P+1;
-							else if(nt<=P) kill(1,nt);
-							else if(nt<=P+P) mp[nx][ny].type=P+1;
-							else mp[nx][ny].type=P+P+1;
-						} else mp[nx][ny].x-=x-1;
-						mp[nowx][nowy].x=1;
-						mp[nowx][nowy].x+=tmp;
-						B=1;
+						x-=tmp;
+						if((tp!=1&&tp!=P+1&&tp!=P+P+1)||x<=1);
+						else {
+							if(nt==1||nt==P+1||nt==P+P+1) mp[nx][ny].x+=x-1;
+							else if(x-1>mp[nx][ny].x) {
+								mp[nx][ny].x=x-1-mp[nx][ny].x;
+								if(nt==-3) mp[nx][ny].type=P+1;
+								else if(nt==-1) mp[nx][ny].type=P+P+1;
+								else if(nt<=P) kill(1,nt);
+								else if(nt<=P+P) mp[nx][ny].type=P+1;
+								else mp[nx][ny].type=P+P+1;
+							} else mp[nx][ny].x-=x-1;
+							mp[nowx][nowy].x=1;
+							mp[nowx][nowy].x+=tmp;
+							B=1;
+						}
 					}
 					nowx=nx;
 					nowy=ny;
