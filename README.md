@@ -1,5 +1,8 @@
 # Local Generals.io
 
+> This project is deprecated and archived. Please go and see our new project: [LocalGen-new](http://github.com/LocalGen-dev/LocalGen-new).  
+> Please don't fork and eager to find updates of this project. It will not be maintained any more.
+
 Hello Everyone!!!
 
 This the project of LOCAL GENERALS.IO.
